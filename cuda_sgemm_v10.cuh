@@ -54,6 +54,7 @@ template <int BLOCK_SIZE> void
 hstCalByV10(Matrix a, Matrix b, Matrix c) {
     dim3 block(BLOCK_SIZE, BLOCK_SIZE);
     dim3 grid(c.rows / BLOCK_SIZE, c.cols / BLOCK_SIZE);
+    kerWarmUp<<<1,1>>>();
     kerSgemmV10<BLOCK_SIZE><<<grid, block>>>(a, b, c);
 }
 
