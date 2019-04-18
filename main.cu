@@ -8,6 +8,7 @@
 
 #include "cuda_sgemm_cublas.cuh"
 #include "cuda_sgemm_v10.cuh"
+#include "cuda_sgemm_v20.cuh"
 
 #define M 4096
 #define K 4096
@@ -38,11 +39,17 @@ int main()
     checkCudaErrors(cudaMemcpy(h_ref.data, d_c.data, M * N * sizeof(float), cudaMemcpyDeviceToHost));
     hstEchoMatrix(h_ref, 4);
 
-    // Calculate with cuda_sgemm_v1
+    // Calculate with cuda_sgemm_v10
     hstAllocMatrix(h_v10, M, N);
     hstCalByV10<32>(d_a, d_b, d_c);
     checkCudaErrors(cudaMemcpy(h_v10.data, d_c.data, d_c.rows * d_c.cols * sizeof(float), cudaMemcpyDeviceToHost));
     hstEchoMatrix(h_v10, 4);
+
+     // Calculate with cuda_sgemm_v20
+     hstAllocMatrix(h_v20, M, N);
+     hstCalByV20<32>(d_a, d_b, d_c);
+     checkCudaErrors(cudaMemcpy(h_v20.data, d_c.data, d_c.rows * d_c.cols * sizeof(float), cudaMemcpyDeviceToHost));
+     hstEchoMatrix(h_v20, 4);   
 /*
 
 
